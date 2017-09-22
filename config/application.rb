@@ -27,5 +27,7 @@ module GitList
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.active_support.escape_html_entities_in_json = false
   end
 end

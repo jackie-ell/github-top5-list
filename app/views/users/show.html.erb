@@ -1,21 +1,32 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Show</title>
-    <style media="screen">
-      a {
-        padding-top: 10px;
-      }
-    </style>
-  </head>
-  <body>
+    <script type="text/javascript">
+      $(document).ready(() => {
+        let repos = '<%= @user_repos.to_s.html_safe %>'
+        console.log(repos)
+
+        $('.sort#stargazers').on('click', (event) => {
+          event.preventDefault()
+          alert('stargazers')
+        })
+
+        $('.sort#watchers').on('click', (event) => {
+          event.preventDefault()
+          alert('watchers')
+        })
+      })
+    </script>
+
+
     <div class="" style="display:flex;flex-direction:column;align-items:center;">
       <% if @user.present? %>
         <h1><%= @user %></h1>
 
+        <div style="text-align:center">
+          <a href="#" class="sort" id="stargazers">Stargazers</a> -
+          <a href="#" class="sort" id="watchers">Watchers</a>
+        </div>
+
         <h3>Top 5 repositories:</h3>
-        <% @user_repos.each do |repo| %>
+        <% @user_repos.first(5).each do |repo| %>
           <% if repo != nil %>
           <p>
             <a href="<%= repo["html_url"] %>"><%= repo["name"] %></a> -
@@ -27,5 +38,3 @@
         <h1>User not found</h1>
       <% end %>
     </div>
-  </body>
-</html>
