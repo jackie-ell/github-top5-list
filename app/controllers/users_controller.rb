@@ -3,12 +3,18 @@ class UsersController < ApplicationController
   end
 
   def show
-    github = Github.new
+    github = Github::Client::Repos.new
 
-    @user_repos = github.repos.list(user: params[:user])
-    .map.with_index { |x,i| if i < 5 then x end }
+    begin
+      repos = github.list(user: params[:user])
+      .sort_by { |k| k["stargazers_count"] }
+      .reverse
+      .map.with_index { |x,i| if i < 5 then x end }
 
-    @user = params[:user]
-    @user_repos = @user_repos.as_json
+      @user = params[:user]
+      @user_repos = repos.as_json
+    rescue
+
+    end
   end
 end
