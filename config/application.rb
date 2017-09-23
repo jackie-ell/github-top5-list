@@ -28,6 +28,10 @@ module GitList
     # Don't generate system test files.
     config.generators.system_tests = nil
 
+    # Remove &quot; and the like
     config.active_support.escape_html_entities_in_json = false
+
+    # Suppress Hashie mash log warnings (especially about #size!)
+    Hashie.logger = Logger.new(nil)
   end
 end
