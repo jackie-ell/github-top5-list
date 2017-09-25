@@ -1,40 +1,73 @@
     <script type="text/javascript">
       $(document).ready(() => {
-        let repos = '<%= @user_repos.to_s.html_safe %>'
-        console.log(repos)
+        let repos = JSON.parse(`<%= @user_repos.to_json.html_safe %>`)
+        let list = $('#repos-list')
+
+        listStargazers()
+
+        function sortRepos(element){
+          return Object.keys(repos).sort((a,b) => {
+            return repos[b][element] - repos[a][element]
+          })
+        }
+
+        function listStargazers(){
+          let sorted = sortRepos("stargazers_count")
+
+          list.empty()
+
+          for(let i = 0; i < 5; i+=1){
+            let j = sorted[i]
+
+            list.append(`
+              <p>
+                <a href='${repos[j].html_url}'>${repos[j].name}</a> -
+                Stargazers: ${repos[j].stargazers_count}
+              </p>`)
+          }
+        }
+
+        function listWatchers() {
+          let sorted = sortRepos("forks_count")
+
+          list.empty()
+
+          for(let i = 0; i < 5; i+=1){
+            let j = sorted[i]
+
+            list.append(`
+              <p>
+                <a href='${repos[j].html_url}'>${repos[j].name}</a> -
+                Forks: ${repos[j].forks_count}
+              </p>`)
+          }
+        }
 
         $('.sort#stargazers').on('click', (event) => {
           event.preventDefault()
-          alert('stargazers')
+
+          listStargazers()
         })
 
-        $('.sort#watchers').on('click', (event) => {
+        $('.sort#forks').on('click', (event) => {
           event.preventDefault()
-          alert('watchers')
+
+          listWatchers()
         })
       })
     </script>
 
 
     <div class="" style="display:flex;flex-direction:column;align-items:center;">
-      <% if @user.present? %>
-        <h1><%= @user %></h1>
+      <h1><%= @user %></h1>
 
-        <div style="text-align:center">
-          <a href="#" class="sort" id="stargazers">Stargazers</a> -
-          <a href="#" class="sort" id="watchers">Watchers</a>
-        </div>
+      <div style="text-align:center">
+        <a href="#" class="sort" id="stargazers">Stargazers</a> -
+        <a href="#" class="sort" id="forks">Forks</a>
+      </div>
 
-        <h3>Top 5 repositories:</h3>
-        <% @user_repos.first(5).each do |repo| %>
-          <% if repo != nil %>
-          <p>
-            <a href="<%= repo["html_url"] %>"><%= repo["name"] %></a> -
-            Stargazers: <%= repo["stargazers_count"] %>
-          </p>
-          <% end %>
-        <% end %>
-      <% else %>
-        <h1>User not found</h1>
-      <% end %>
+      <h3>Top 5 repositories:</h3>
+      <div id="repos-list" style="text-align:center">
+
+      </div>
     </div>
