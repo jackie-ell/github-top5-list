@@ -36,8 +36,6 @@ gem 'github_api'
 
 gem 'jquery-rails'
 
-gem 'moneta'
-
 gem 'api_cache'
 
 gem 'dalli'
