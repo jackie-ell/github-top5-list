@@ -3,6 +3,7 @@
   $(document).ready(() => {
     let repos = JSON.parse(`<%= @user_repos.to_json.html_safe %>`)
     let list = $('#repos-list')
+    console.log(repos);
 
     listStargazers()
 
@@ -17,14 +18,14 @@
 
       list.empty()
 
-      for(let i = 0; i < 5; i+=1){
+      for(let i = 0; i < sorted.length && i < 5; i+=1){
         let j = sorted[i]
 
         list.append(`
-          <p>
-            <a href='${repos[j].html_url}'>${repos[j].name}</a> -
-            Stargazers: ${repos[j].stargazers_count}
-          </p>`)
+            <a href='${repos[j].html_url}' class="list-group-item"><strong>${repos[j].name}</strong>
+            <span class="badge">Stargazers: ${repos[j].stargazers_count}</span>
+            </a>
+            `)
       }
     }
 
@@ -37,10 +38,10 @@
         let j = sorted[i]
 
         list.append(`
-          <p>
-            <a href='${repos[j].html_url}'>${repos[j].name}</a> -
-            Forks: ${repos[j].forks_count}
-          </p>`)
+            <a  href='${repos[j].html_url}' class="list-group-item"><strong>${repos[j].name}</strong>
+            <span class="badge">Forks: ${repos[j].forks_count}</span>
+            </a>
+            `)
       }
     }
 
@@ -60,13 +61,13 @@
   <div class="content">
     <h1><%= @user %></h1>
 
-    <div style="text-align:center">
-      <a href="#" class="sort" id="stargazers">Stargazers</a> -
-      <a href="#" class="sort" id="forks">Forks</a>
+    <div>
+      <button class="btn btn-default btn-sm sort" id="stargazers">Stargazers</button>
+      <button class="btn btn-default btn-sm sort" id="forks">Forks</button>
     </div>
 
     <h3>Top 5 repositories:</h3>
-    <div id="repos-list" style="text-align:center">
+    <div id="repos-list" class="list-group">
 
     </div>
   </div>

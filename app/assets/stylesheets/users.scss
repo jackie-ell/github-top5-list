@@ -2,12 +2,12 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-a {
-  padding-top: 10px;
-}
-
 .content {
   display:flex;
   flex-direction:column;
   align-items:center;
+}
+
+#repos-list.list-group {
+  width: 40%;
 }
