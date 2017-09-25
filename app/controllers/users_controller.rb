@@ -13,8 +13,8 @@ class UsersController < ApplicationController
 
       @user = params[:user]
       @user_repos = repos.as_json
-    rescue
-
+    rescue => error
+      @user = error
     end
   end
 end
