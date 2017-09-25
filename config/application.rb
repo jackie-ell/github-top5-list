@@ -33,5 +33,8 @@ module GitList
 
     # Suppress Hashie mash log warnings (especially about #size!)
     Hashie.logger = Logger.new(nil)
+
+    # Set Dalli memcached as APICache's storage
+    APICache.store = APICache::DalliStore.new(Dalli::Client.new)
   end
 end

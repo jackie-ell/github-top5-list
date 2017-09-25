@@ -1,9 +1,8 @@
 <% if @user.present? %>
   <script>
   $(document).ready(() => {
-    let repos = JSON.parse(`<%= @user_repos.to_json.html_safe %>`)
+    let repos = JSON.parse(`<%= @user_repos.to_s.html_safe %>`)
     let list = $('#repos-list')
-    console.log(repos);
 
     listStargazers()
 
@@ -23,7 +22,7 @@
 
         list.append(`
             <a href='${repos[j].html_url}' class="list-group-item"><strong>${repos[j].name}</strong>
-            <span class="badge label-warning">Stargazers: ${repos[j].stargazers_count}</span>
+            <span class="label label-warning pull-right">Stargazers: ${repos[j].stargazers_count}</span>
             </a>
             `)
       }
@@ -39,7 +38,7 @@
 
         list.append(`
             <a  href='${repos[j].html_url}' class="list-group-item"><strong>${repos[j].name}</strong>
-            <span class="badge">Forks: ${repos[j].forks_count}</span>
+            <span class="label label-success pull-right">Forks: ${repos[j].forks_count}</span>
             </a>
             `)
       }
@@ -73,6 +72,12 @@
 
     </div>
   </div>
+<% elsif @error.present? %>
+<div class="container">
+  <div class="danger">
+    <h1><%= @error %></h1>
+  </div>
+</div>
 <% else %>
   <div class="container">
     <div class="page-header">

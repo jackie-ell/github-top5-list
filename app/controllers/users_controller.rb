@@ -3,18 +3,20 @@ class UsersController < ApplicationController
   end
 
   def show
-    github = Github::Client::Repos.new
+    url = "https://api.github.com/users/#{params[:user]}/repos"
 
     begin
-      repos = github.list(user: params[:user])
-      # .sort_by { |k| k["stargazers_count"] }
-      # .reverse
-      # .map.with_index { |x,i| if i < 5 then x end }
+      if APICache.store.exists?(url)
+        repos = APICache.store.get(url).force_encoding('UTF-8')
+      else
+        repos = APICache.get(url)
+        APICache.store.set(url, repos)
+      end
 
       @user = params[:user]
       @user_repos = repos.as_json
-    rescue => error
-      @user = error
+    rescue APICache::APICacheError => error
+      @error = error
     end
   end
 end
