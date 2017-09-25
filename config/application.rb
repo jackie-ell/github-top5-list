@@ -31,9 +31,6 @@ module GitList
     # Remove &quot; and the like
     config.active_support.escape_html_entities_in_json = false
 
-    # Suppress Hashie mash log warnings (especially about #size!)
-    Hashie.logger = Logger.new(nil)
-
     # Set Dalli memcached as APICache's storage
     APICache.store = APICache::DalliStore.new(Dalli::Client.new)
   end

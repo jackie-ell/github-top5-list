@@ -32,8 +32,6 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'github_api'
-
 gem 'jquery-rails'
 
 gem 'api_cache'
