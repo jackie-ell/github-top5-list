@@ -16,7 +16,11 @@ class UsersController < ApplicationController
       @user = params[:user]
       @user_repos = repos.as_json
     rescue APICache::APICacheError => error
-      @error = error
+      if error.class == APICache::InvalidResponse
+        @error = "User not found."
+      else
+        @error = error
+      end
     end
   end
 end
