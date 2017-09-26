@@ -1,24 +1,11 @@
-# README
+# Github List
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+#### Objective:
 
-Things you may want to cover:
+Use the Github api to display a given user's (in url) "top 5" repositories. (What determines "top 5" is up to me)
 
-* Ruby version
+ #### Challenges:
 
-* System dependencies
+* Filtering repositories by different key:values
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Cache api urls to avoid hitting rate limit
