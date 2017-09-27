@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = "#{params[:user]}"
+    @user = params[:user]
 
     uri = URI("https://api.github.com/users/%s/repos" % [@user])
     # data = {'Accept'=>'application/vnd.github.v3+json'}
