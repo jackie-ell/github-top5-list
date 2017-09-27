@@ -3,23 +3,26 @@ class UsersController < ApplicationController
   end
 
   def show
-    url = "https://api.github.com/users/#{params[:user]}/repos"
+    @user = "#{params[:user]}"
 
-    begin
-      if APICache.store.exists?(url)
-        repos = APICache.store.get(url).force_encoding('UTF-8')
-      else
-        repos = APICache.get(url)
-        APICache.store.set(url, repos)
-      end
+    uri = URI("https://api.github.com/users/%s/repos" % [@user])
+    # data = {'Accept'=>'application/vnd.github.v3+json'}
 
-      @user = params[:user]
-      @user_repos = repos.as_json
-    rescue APICache::APICacheError => error
-      if error.class == APICache::InvalidResponse
+    @user_repos = APICache.get(@user) do
+      res = Net::HTTP.get_response(uri)
+
+      case res
+      when Net::HTTPOK, Net::HTTPSuccess then
+        res.body
+      when Net::HTTPNotFound then
         @error = "User not found."
+        Net::HTTPNotFound
+      when Net::HTTPUnauthorized then
+        @error = "GitHub rate limit reached. Try again later."
+        Net::HTTPUnauthorized
       else
-        @error = error
+        @error = res.body
+        res
       end
     end
   end

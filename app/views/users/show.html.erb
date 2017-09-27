@@ -1,4 +1,4 @@
-<% if @user.present? %>
+
   <script>
   $(document).ready(() => {
     let repos = JSON.parse(`<%= @user_repos.to_s.html_safe %>`)
@@ -61,7 +61,7 @@
     <div class="page-header">
       <h1><%= @user %></h1>
     </div>
-
+<% unless @error.present? %>
     <div>
       <button class="btn btn-default btn-sm sort" id="stargazers">Stargazers</button>
       <button class="btn btn-default btn-sm sort" id="forks">Forks</button>
@@ -72,16 +72,10 @@
 
     </div>
   </div>
-<% elsif @error.present? %>
+<% else %>
 <div class="container">
   <div class="danger">
     <h1><%= @error %></h1>
   </div>
 </div>
-<% else %>
-  <div class="container">
-    <div class="page-header">
-      <h1>User not found!</h1>
-    </div>
-  </div>
 <% end %>
