@@ -6,7 +6,6 @@ class UsersController < ApplicationController
     @user = params[:user]
 
     uri = URI("https://api.github.com/users/%s/repos" % [@user])
-    # data = {'Accept'=>'application/vnd.github.v3+json'}
 
     @user_repos = APICache.get(@user) do
       res = Net::HTTP.get_response(uri)
@@ -15,15 +14,23 @@ class UsersController < ApplicationController
       when Net::HTTPOK, Net::HTTPSuccess then
         res.body
       when Net::HTTPNotFound then
-        @error = "User not found."
         Net::HTTPNotFound
       when Net::HTTPUnauthorized then
-        @error = "GitHub rate limit reached. Try again later."
         Net::HTTPUnauthorized
+      when APICache::TimeoutError then
+        APICache::TimeoutError
       else
-        @error = res.body
         res
       end
     end
+
+    if @user_repos == Net::HTTPNotFound then
+      @error = "User not found."
+    elsif @user_repos == Net::HTTPUnauthorized then
+      @error = "GitHub rate limit reached. Try again later."
+    elsif @user_repos == APICache::TimeoutError
+      @error = "Connection timed out."
+    end
+
   end
 end

@@ -1,10 +1,28 @@
+<% unless @error.present? %>
+  <div class="content">
+    <div class="page-header">
+      <h1><%= @user %></h1>
+    </div>
+
+    <h3>Top 5 repositories:</h3>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div id="stargazers-list" class="col-xs-12 col-md-6">
+
+      </div>
+      <div id="forks-list" class="col-xs-12 col-md-6">
+
+      </div>
+    </div>
+  </div>
 
   <script>
   $(document).ready(() => {
     let repos = JSON.parse(`<%= @user_repos.to_s.html_safe %>`)
-    let list = $('#repos-list')
 
-    listStargazers()
+    fillList("stargazers", "warning")
+    fillList("forks", "success")
 
     function sortRepos(element){
       return Object.keys(repos).sort((a,b) => {
@@ -12,8 +30,13 @@
       })
     }
 
-    function listStargazers(){
-      let sorted = sortRepos("stargazers_count")
+    function capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    function fillList(name, label){
+      let sorted = sortRepos(`${name}_count`)
+      let list = $(`#${name}-list`)
 
       list.empty()
 
@@ -22,56 +45,13 @@
 
         list.append(`
             <a href='${repos[j].html_url}' class="list-group-item"><strong>${repos[j].name}</strong>
-            <span class="label label-warning pull-right">Stargazers: ${repos[j].stargazers_count}</span>
+            <span class="label label-${label} pull-right">${capitalizeFirstLetter(name)}: ${repos[j].stargazers_count}</span>
             </a>
             `)
       }
     }
-
-    function listWatchers() {
-      let sorted = sortRepos("forks_count")
-
-      list.empty()
-
-      for(let i = 0; i < 5; i+=1){
-        let j = sorted[i]
-
-        list.append(`
-            <a  href='${repos[j].html_url}' class="list-group-item"><strong>${repos[j].name}</strong>
-            <span class="label label-success pull-right">Forks: ${repos[j].forks_count}</span>
-            </a>
-            `)
-      }
-    }
-
-    $('.sort#stargazers').on('click', (event) => {
-      event.preventDefault()
-
-      listStargazers()
-    })
-
-    $('.sort#forks').on('click', (event) => {
-      event.preventDefault()
-
-      listWatchers()
-    })
   })
   </script>
-  <div class="content">
-    <div class="page-header">
-      <h1><%= @user %></h1>
-    </div>
-<% unless @error.present? %>
-    <div>
-      <button class="btn btn-default btn-sm sort" id="stargazers">Stargazers</button>
-      <button class="btn btn-default btn-sm sort" id="forks">Forks</button>
-    </div>
-
-    <h3>Top 5 repositories:</h3>
-    <div id="repos-list" class="list-group">
-
-    </div>
-  </div>
 <% else %>
 <div class="container">
   <div class="danger">

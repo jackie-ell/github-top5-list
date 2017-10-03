@@ -8,6 +8,8 @@
   align-items:center;
 }
 
-#repos-list.list-group {
-  width: 40%;
+@media (max-width: 992px) {
+  .col-xs-12:not(:first-child) {
+    padding-top: 10px;
+  }
 }
