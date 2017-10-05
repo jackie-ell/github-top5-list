@@ -35,7 +35,8 @@
     }
 
     function fillList(name, label){
-      let sorted = sortRepos(`${name}_count`)
+      let count = `${name}_count`
+      let sorted = sortRepos(count)
       let list = $(`#${name}-list`)
 
       list.empty()
@@ -45,7 +46,7 @@
 
         list.append(`
             <a href='${repos[j].html_url}' class="list-group-item"><strong>${repos[j].name}</strong>
-            <span class="label label-${label} pull-right">${capitalizeFirstLetter(name)}: ${repos[j].stargazers_count}</span>
+            <span class="label label-${label} pull-right">${capitalizeFirstLetter(name)}: ${repos[j][count]}</span>
             </a>
             `)
       }
