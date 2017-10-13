@@ -35,7 +35,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
 
 gem 'api_cache'
-
+gem 'memcachier'
 gem 'dalli'
 
 group :development, :test do
