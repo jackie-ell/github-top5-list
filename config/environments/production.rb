@@ -55,7 +55,7 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
 
   # Use a different cache store in production.
-  config.cache_store = :dalli_store, Rails.application.secrets.MEMCACHIER_SERVERS || ""),
+  config.cache_store = :dalli_store, Rails.application.secrets.MEMCACHIER_SERVERS || "",
                   {:username => Rails.application.secrets.MEMCACHIER_USERNAME,
                    :password => Rails.application.secrets.MEMCACHIER_PASSWORD,
                    :expires_in => 1.hour,
