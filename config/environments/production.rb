@@ -55,14 +55,14 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
 
   # Use a different cache store in production.
-  config.cache_store = :dalli_store, Rails.application.secrets.MEMCACHIER_SERVERS || "",
+  config.cache_store = :dalli_store, Rails.application.secrets.MEMCACHIER_SERVERS || nil,
                   {:username => Rails.application.secrets.MEMCACHIER_USERNAME,
                    :password => Rails.application.secrets.MEMCACHIER_PASSWORD,
                    :expires_in => 1.hour,
                    :failover => true,
                    :socket_timeout => 1.5,
                    :socket_failure_delay => 0.2
-                  })
+                  }
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
